@@ -1,0 +1,15 @@
+{
+  "name": "midnight-utilities",
+  "version": "1.0.0",
+  "description": "DnD bot for the midnight zone Discord server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord-bot",
+    "dnd"
+  ],
+  "author": "cyp3r and .skelington",
+  "license": "ISC"
+}
