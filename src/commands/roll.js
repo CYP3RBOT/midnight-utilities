@@ -36,7 +36,7 @@ module.exports = {
 
   async execute(interaction) {
     const dice_type = interaction.options.getString("type");
-    const dice_num = interaction.options.getInteger("number");
+    const dice_num = Math.abs(interaction.options.getInteger("number"));
     const dice_mod = interaction.options.getInteger("modifier");
 
     const min = 1;
@@ -49,7 +49,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
-          random += random
+          random += random;
         }
 
         random = random + dice_mod;
@@ -62,12 +62,12 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
-          random += random
+          random += random;
         }
 
         random = random + dice_mod;
 
-        await interaction.reply("Your number is" + random);
+        await interaction.reply("Your number is " + random);
         break;
 
       case "d8":
@@ -75,12 +75,12 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
-          random += random
+          random += random;
         }
 
         random = random + dice_mod;
 
-        await interaction.reply("Your number is" + random);
+        await interaction.reply("Your number is " + random);
         break;
 
       case "d10":
@@ -88,12 +88,12 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
-          random += random
+          random += random;
         }
 
         random = random + dice_mod;
 
-        await interaction.reply("Your number is" + random);
+        await interaction.reply("Your number is " + random);
         break;
 
       case "d12":
@@ -101,12 +101,12 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
-          random += random
+          random += random;
         }
 
         random = random + dice_mod;
 
-        await interaction.reply("Your number is" + random);
+        await interaction.reply("Your number is " + random);
         break;
 
       case "d20":
@@ -114,12 +114,12 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
-          random += random
+          random += random;
         }
 
         random = random + dice_mod;
 
-        await interaction.reply("Your number is" + random);
+        await interaction.reply("Your number is " + random);
         break;
 
       case "d100":
@@ -127,12 +127,12 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
-          random += random
+          random += random;
         }
 
         random = random + dice_mod;
 
-        await interaction.reply("Your number is" + random);
+        await interaction.reply("Your number is " + random);
         break;
     }
   },
