@@ -1,3 +1,7 @@
 {
-  "databaseAdmin": "1182834485495079033"
+  "databaseAdmin": "1182834485495079033",
+  "colors": {
+    "green": "#62c73a",
+    "red": "#c73a3a"
+  }
 }

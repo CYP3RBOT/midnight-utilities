@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
-const { databaseAdmin } = require("../../config.json");
+const { databaseAdmin, colors } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,5 +30,11 @@ module.exports = {
 
     const category = interaction.options.getString("category");
     const item = interaction.options.getString("item");
+
+    const embed = new EmbedBuilder()
+      .setTitle("Added Item")
+      .setDescription(`Added \`${item}\` to **${category}**`)
+      .setColor(colors.green)
+      .setTimestamp();
   },
 };
