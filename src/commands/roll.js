@@ -45,59 +45,87 @@ module.exports = {
 		switch (dice_type) {
 			case "d4":
 				max = 4
-				random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+
+				for (let i = 0; i < dice_num; i++) {
+					random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+				}
+
 				random = random + dice_mod
 
 				await interaction.reply("Your number is " + random)
+				break;
 
 			case "d6":
 				max = 6
-				random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+
+				for (let i = 0; i < dice_num; i++) {
+					random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+				}
+
 				random = random + dice_mod
 
 				await interaction.reply("Your number is" + random)
+				break
 
 			case "d8":
 				max = 8
-				random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+
+				for (let i = 0; i < dice_num; i++) {
+					random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+				}
+
 				random = random + dice_mod
 
 				await interaction.reply("Your number is" + random)
+				break
 
 			case "d10":
 				max = 10
-				random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+
+				for (let i = 0; i < dice_num; i++) {
+					random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+				}
+
 				random = random + dice_mod
 
 				await interaction.reply("Your number is" + random)
+				break
 
 			case "d12":
 				max = 12
-				random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+
+				for (let i = 0; i < dice_num; i++) {
+					random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+				}
+
 				random = random + dice_mod
 
 				await interaction.reply("Your number is" + random)
+				break
 
 			case "d20":
 				max = 20
-				random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+
+				for (let i = 0; i < dice_num; i++) {
+					random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+				}
+
 				random = random + dice_mod
 
 				await interaction.reply("Your number is" + random)
+				break
 
 			case "d100":
 				max = 100
-				random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+
+				for (let i = 0; i < dice_num; i++) {
+					random = Math.floor(Math.random() * (+max + 1 - +min)) + +min
+				}
+
 				random = random + dice_mod
 
 				await interaction.reply("Your number is" + random)
-
-
-
-
-
-
-
+				break
 
 		}
 
