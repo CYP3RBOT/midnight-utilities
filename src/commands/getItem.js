@@ -11,5 +11,8 @@ module.exports = {
 
   async execute(interaction) {
     const item = interaction.options.getString("item");
+    await getItem(item).then((result) => {
+		console.log(result)
+	})
   },
 };
