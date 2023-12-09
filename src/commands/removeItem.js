@@ -3,6 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { databaseAdmin, colors } = require("../../config.json");
 const removeItem = require("../utils/removeItem");
 const getItem = require("../utils/getItem");
+const capitalizeAllWords = require("../utils/capitalizeAllWords");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -47,7 +48,11 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Removed Item")
-      .setDescription(`Removed \`${item}\` from \`${category}\``)
+      .setDescription(
+        `Removed \`${item}\` from \`${capitalizeAllWords(
+          category.replaceAll("-", " ")
+        )}\``
+      )
       .setColor(colors.green)
       .setTimestamp()
       .setFooter({

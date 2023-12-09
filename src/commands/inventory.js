@@ -7,6 +7,7 @@ const {
 } = require("discord.js");
 
 const getInventory = require("../utils/getInventory");
+const capitalizeAllWords = require("../utils/capitalizeAllWords");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -22,7 +23,7 @@ module.exports = {
       if (category === "_id") continue;
       const arr = inventory[category];
       const embed = new EmbedBuilder()
-        .setTitle(category)
+        .setTitle(capitalizeAllWords(category.replaceAll("-", " ")))
         .setDescription(
           arr.length > 0
             ? arr.map((item) => "- " + item.item).join("\n")

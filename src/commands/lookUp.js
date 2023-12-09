@@ -3,6 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const axios = require("axios");
 const baseURL = "https://www.dnd5eapi.co";
 const { colors } = require("../../config.json");
+const capitalizeAllWords = require("../utils/capitalizeAllWords");
 
 const apis = {
   "ability-scores": "/api/ability-scores",
@@ -30,13 +31,6 @@ const apis = {
   traits: "/api/traits",
   "weapon-properties": "/api/weapon-properties",
 };
-
-function capitalizeAllWords(string) {
-  return string
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
 
 module.exports = {
   data: new SlashCommandBuilder()
