@@ -15,7 +15,15 @@ module.exports = {
         .setRequired(true)
         .setChoices(
           { name: "Items of Goldness", value: "items-of-goldness" },
-          { name: "Assets", value: "assets" }
+          { name: "Assets", value: "assets" },
+          { name: "Items of Importance", value: "items-of-importance" },
+          {
+            name: "Consumable Items of Magicness",
+            value: "consumable-items-of-magicness",
+          },
+          { name: "Items of Magicness", value: "items-of-magicness" },
+          { name: "Items of Not Magicness", value: "items-of-not-magicness" },
+          { name: "Boat Supplies", value: "boat-supplies" }
         )
     )
     .addStringOption((option) =>

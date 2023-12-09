@@ -24,7 +24,9 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setTitle(category)
         .setDescription(
-          arr.length > 0 ? arr.map((item) => item.item).join("\n") : "None"
+          arr.length > 0
+            ? arr.map((item) => "- " + item.item).join("\n")
+            : "None"
         )
         .setTimestamp()
         .setFooter({
