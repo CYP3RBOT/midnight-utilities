@@ -9,7 +9,7 @@ const { MongoClient } = require("mongodb");
  * @param {Object} query - The query object used to filter the items.
  * @returns {Promise<Array>} A promise that resolves to an array of fetched items.
  */
-async function fetchItem(collection, query) {
+async function fetchItems(collection, query) {
   const client = new MongoClient(process.env.MONGO_URI);
 
   try {
@@ -27,4 +27,4 @@ async function fetchItem(collection, query) {
   }
 }
 
-module.exports = fetchItem;
+module.exports = fetchItems;
