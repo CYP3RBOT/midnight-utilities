@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 const { databaseAdmin, colors } = require("../../config.json");
 const addItem = require("../utils/addItem");
+const getItem = require("../utils/getItem");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -43,14 +44,30 @@ module.exports = {
         iconURL: interaction.user.displayAvatarURL(),
       });
 
-    await addItem(category, item, interaction.user.id)
-      .then(() => {
-        interaction.editReply({ embeds: [embed] });
+    const success = await getItem(item)
+      .then((result) => {
+        if (!result) return true;
       })
       .catch((error) => {
         interaction.editReply({ content: `Error: ${error}`, ephemeral: true });
       });
+
+    if (success) {
+      await addItem(category, item, interaction.user.id)
+        .then(() => {
+          interaction.editReply({ embeds: [embed] });
+        })
+        .catch((error) => {
+          interaction.editReply({
+            content: `Error: ${error}`,
+            ephemeral: true,
+          });
+        });
+    } else {
+      interaction.editReply({
+        content: `Error: \`${item}\` already exists in the database!`,
+        ephemeral: true,
+      });
+    }
   },
 };
-
-// TODO: Add a check to see if the item already exists in the database

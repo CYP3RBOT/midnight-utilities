@@ -5,7 +5,7 @@ module.exports = {
     .setName("fish")
     .setDescription("The almighty fish command"),
   async execute(interaction) {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 3; i++) {
       await interaction.channel.send("FISH");
     }
   },
