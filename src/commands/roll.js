@@ -49,6 +49,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
+          random += random
         }
 
         random = random + dice_mod;
@@ -61,6 +62,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
+          random += random
         }
 
         random = random + dice_mod;
@@ -73,6 +75,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
+          random += random
         }
 
         random = random + dice_mod;
@@ -85,6 +88,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
+          random += random
         }
 
         random = random + dice_mod;
@@ -97,6 +101,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
+          random += random
         }
 
         random = random + dice_mod;
@@ -109,6 +114,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
+          random += random
         }
 
         random = random + dice_mod;
@@ -121,6 +127,7 @@ module.exports = {
 
         for (let i = 0; i < dice_num; i++) {
           random = Math.floor(Math.random() * (+max + 1 - +min)) + +min;
+          random += random
         }
 
         random = random + dice_mod;
