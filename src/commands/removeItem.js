@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 const { databaseAdmin, colors } = require("../../config.json");
 const removeItem = require("../utils/removeItem");
+const getItem = require("../utils/getItem");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -46,13 +47,31 @@ module.exports = {
         iconURL: interaction.user.displayAvatarURL(),
       });
 
-    await removeItem(category, item)
-      .then(() => {
-        interaction.editReply({ embeds: [embed] });
+    const success = await getItem(item)
+      .then((result) => {
+        if (result) return true;
       })
       .catch((error) => {
         interaction.editReply({ content: `Error: ${error}`, ephemeral: true });
       });
+
+    if (success) {
+      await removeItem(category, item)
+        .then(() => {
+          interaction.editReply({ embeds: [embed] });
+        })
+        .catch((error) => {
+          interaction.editReply({
+            content: `Error: ${error}`,
+            ephemeral: true,
+          });
+        });
+    } else {
+      interaction.editReply({
+        content: `Error: \`${item}\` does not exist in \`${category}\``,
+        ephemeral: true,
+      });
+    }
   },
 };
 

@@ -16,7 +16,7 @@ async function removeItem(category, item) {
     await client.connect();
     const col = client.db("inventory").collection("contents");
 
-    const cursor = await col.findOneAndDelete(
+    const cursor = await col.findOneAndUpdate(
       {},
       {
         $pull: {
@@ -24,6 +24,17 @@ async function removeItem(category, item) {
         },
       }
     );
+
+    if (await col.findOne({ [category]: { $size: 0 } })) {
+      await col.findOneAndUpdate(
+        {},
+        {
+          $unset: {
+            [category]: "",
+          },
+        }
+      );
+    }
 
     return cursor;
   } catch (e) {
