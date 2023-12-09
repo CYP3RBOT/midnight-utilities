@@ -14,9 +14,17 @@ async function addItem(collection, item) {
 
   try {
     await client.connect();
-    const col = client.db("inventory").collection(collection);
+    const col = client.db("inventory").collection("contents");
 
-    const cursor = col.insertOne({ collection: item.toString() });
+    const cursor = col.findOneAndUpdate(
+      {},
+      {
+        $push: {
+          [collection]: item,
+        },
+      },
+      { upsert: true }
+    );
 
     return await cursor;
   } catch (e) {

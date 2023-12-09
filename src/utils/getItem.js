@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const { MongoClient } = require("mongodb");
-const getItem = require("../commands/getItem");
 
 /**
  * Fetches an item from the MongoDB inventory collection based on the provided query.
@@ -15,12 +14,23 @@ async function getItem(query) {
   try {
     await client.connect();
 
-    const result = await client
-      .db(process.env.MONGO_URI)
-      .collection("inventory")
-      .findOne(query);
+    const col = client.db("inventory").collection("contents");
 
-    return result;
+    const result = await col.findOne({});
+
+    // loop through "results" and find the item that matches the query
+    // return that item
+    // if no item matches the query, return null
+
+    for (const [key, value] of Object.entries(result)) {
+      for (let i = 0; i < value.length; i++) {
+        if (value[i] === query) {
+          return key;
+        }
+      }
+    }
+
+    return null;
   } catch (e) {
     console.error(e);
   } finally {
