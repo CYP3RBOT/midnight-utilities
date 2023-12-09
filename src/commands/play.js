@@ -4,7 +4,7 @@ const {
   createAudioPlayer,
   createAudioResource,
   joinVoiceChannel,
-  AudioPlayerStatus,
+  VoiceConnectionStatus,
 } = require("@discordjs/voice");
 
 const fs = require("fs");
@@ -68,12 +68,6 @@ module.exports = {
 
       await interaction.reply({ embeds: [embed] });
 
-      const connection = joinVoiceChannel({
-        channelId: channel.id,
-        guildId: channel.guild.id,
-        adapterCreator: channel.guild.voiceAdapterCreator,
-      });
-
       const downloadPath = path.join(
         __dirname,
         "..",
@@ -84,11 +78,41 @@ module.exports = {
       const download = ytdl(youtubeLink, { filter: "audioonly" });
       download.pipe(fs.createWriteStream(downloadPath));
 
-      const resource = createAudioResource(downloadPath);
-      const player = createAudioPlayer();
-      player.play(resource);
+      download.on("end", () => {
+        const resource = createAudioResource(
+          downloadPath.replaceAll("\\", "/")
+        );
+        const player = createAudioPlayer();
 
-      connection.subscribe(player);
+        const connection = joinVoiceChannel({
+          channelId: channel.id,
+          guildId: channel.guild.id,
+          adapterCreator: channel.guild.voiceAdapterCreator,
+        })
+          .subscribe(player)
+          .connection.on("stateChange", (oldState, newState) => {
+            if (
+              newState.status === VoiceConnectionStatus.Ready &&
+              !oldState.joinConfig
+            ) {
+              resource.volume?.setVolume(1);
+              player.play(resource);
+            }
+
+            if (
+              newState.status === VoiceConnectionStatus.Disconnected ||
+              newState.status === VoiceConnectionStatus.Destroyed
+            ) {
+              console.log(`Disconnected`);
+              player.stop();
+            }
+
+            if (newState.status === VoiceConnectionStatus.Destroyed) {
+              console.log(`Destroyed`);
+              connection.destroy();
+            }
+          });
+      });
     }
   },
 };
