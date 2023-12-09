@@ -1,19 +1,32 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 const {
-  VoiceConnectionStatus,
+  createAudioPlayer,
+  createAudioResource,
+  joinVoiceChannel,
   AudioPlayerStatus,
 } = require("@discordjs/voice");
+
+const fs = require("fs");
+const path = require("path");
+const ytdl = require("ytdl-core");
 
 const { colors } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("play")
-    .setDescription("Play a song from youtube"),
+    .setDescription("Play a song from youtube")
+    .addStringOption((option) =>
+      option
+        .setName("song")
+        .setDescription("The song to play (youtube link)")
+        .setRequired(true)
+    ),
   async execute(interaction) {
-    // Check if the user is in a voice channel
-    if (!interaction.member.voice.channel) {
+    const channel = interaction.member.voice.channel;
+
+    if (!channel) {
       await interaction.reply({
         content: "You must be in a voice channel to use this command!",
         ephemeral: true,
@@ -21,66 +34,61 @@ module.exports = {
       return;
     }
 
-    // Check if the bot is in a voice channel
-    if (!interaction.guild.me.voice.channel) {
+    const youtubeLink = interaction.options.getString("song");
+
+    if (!youtubeLink.startsWith("https://www.youtube.com/watch?v=")) {
       await interaction.reply({
-        content: "I'm not in a voice channel!",
+        content: "Invalid youtube link!",
         ephemeral: true,
       });
       return;
     }
 
-    // Check if the user is in the same voice channel as the bot
-    if (
-      interaction.member.voice.channel.id !==
-      interaction.guild.me.voice.channel.id
-    ) {
+    let success;
+    try {
+      success = ytdl.getURLVideoID(youtubeLink);
+    } catch (error) {
       await interaction.reply({
-        content: "You must be in the same voice channel as me!",
+        content: "Invalid youtube link!",
         ephemeral: true,
       });
       return;
     }
 
-    // Check if the bot is already playing audio
-    if (
-      interaction.guild.me.voice.connection.state.status ===
-      VoiceConnectionStatus.Playing
-    ) {
-      await interaction.reply({
-        content: "I'm already playing audio!",
-        ephemeral: true,
+    if (success) {
+      const embed = new EmbedBuilder()
+        .setTitle("Playing Song")
+        .setDescription(`Playing \`${youtubeLink}\``)
+        .setColor(colors.green)
+        .setTimestamp()
+        .setFooter({
+          text: interaction.user.username,
+          iconURL: interaction.user.displayAvatarURL(),
+        });
+
+      await interaction.reply({ embeds: [embed] });
+
+      const connection = joinVoiceChannel({
+        channelId: channel.id,
+        guildId: channel.guild.id,
+        adapterCreator: channel.guild.voiceAdapterCreator,
       });
-      return;
+
+      const downloadPath = path.join(
+        __dirname,
+        "..",
+        "audio",
+        `${success}.mp3`
+      );
+
+      const download = ytdl(youtubeLink, { filter: "audioonly" });
+      download.pipe(fs.createWriteStream(downloadPath));
+
+      const resource = createAudioResource(downloadPath);
+      const player = createAudioPlayer();
+      player.play(resource);
+
+      connection.subscribe(player);
     }
-
-    // Play the audio
-    const player = interaction.client.player;
-    const connection = interaction.guild.me.voice.connection;
-    const queue = interaction.client.queue;
-
-    const song = queue.get(interaction.guild.id).songs[0];
-    const stream = await player.stream(song.url);
-
-    const audioPlayer = connection.subscribe(stream);
-    audioPlayer.on("error", (error) => {
-      console.error(error);
-      interaction.editReply({
-        content: `Error: ${error}`,
-        ephemeral: true,
-      });
-    });
-
-    const embed = new EmbedBuilder()
-      .setTitle("Now Playing")
-      .setDescription(`[${song.title}](${song.url})`)
-      .setColor(colors.green)
-      .setTimestamp()
-      .setFooter({
-        text: interaction.user.username,
-        iconURL: interaction.user.displayAvatarURL(),
-      });
-
-    interaction.editReply({ embeds: [embed] });
   },
 };
