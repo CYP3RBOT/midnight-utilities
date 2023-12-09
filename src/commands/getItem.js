@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const getItem = require("../utils/getItem");
+const { colors } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,13 +11,14 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    await interaction.deferReply();
+
     const item = interaction.options.getString("item");
 
     await getItem(item)
-      .then((result) => {
-        const category = result;
+      .then((category) => {
         if (!category) {
-          interaction.reply({
+          interaction.editReply({
             content: `Could not find item \`${item}\``,
             ephemeral: true,
           });
@@ -25,14 +27,20 @@ module.exports = {
             .setTitle("Item Found")
             .setDescription(
               `Found item \`${item}\` in category \`${category}\``
-            );
+            )
+            .setColor(colors.green)
+            .setTimestamp()
+            .setFooter({
+              text: interaction.user.username,
+              iconURL: interaction.user.displayAvatarURL(),
+            });
 
-          interaction.reply({ embeds: [embed] });
+          interaction.editReply({ embeds: [embed] });
         }
       })
       .catch((e) => {
         console.error(e);
-        interaction.reply({
+        interaction.editReply({
           content: "An error occurred while fetching the item.",
           ephemeral: true,
         });

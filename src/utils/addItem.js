@@ -3,13 +3,14 @@ require("dotenv").config();
 const { MongoClient } = require("mongodb");
 
 /**
- * Adds an item to a MongoDB collection.
+ * Adds an item to a collection in the MongoDB database.
  *
- * @param {string} collection - The name of the collection to add the item to.
- * @param {any} item - The item to be added to the collection.
- * @returns {Promise<any>} A promise that resolves to the result of the insertion operation.
+ * @param {string} category - The name of the category to add the item to.
+ * @param {object} item - The item to be added to the category.
+ * @param {string} moderatorId - The ID of the moderator performing the action.
+ * @returns {Promise<any>} - A promise that resolves to the result of the update operation.
  */
-async function addItem(collection, item) {
+async function addItem(category, item, moderatorId) {
   const client = new MongoClient(process.env.MONGO_URI);
 
   try {
@@ -20,7 +21,7 @@ async function addItem(collection, item) {
       {},
       {
         $push: {
-          [collection]: item,
+          [category]: { item, moderatorId, date: Date.now() },
         },
       },
       { upsert: true }

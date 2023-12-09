@@ -1,12 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 const { databaseAdmin, colors } = require("../../config.json");
-const addItem = require("../utils/addItem");
+const removeItem = require("../utils/removeItem");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("add-item")
-    .setDescription("Add an item to the inventory")
+    .setName("remove-item")
+    .setDescription("Remove an item from the inventory")
     .addStringOption((option) =>
       option
         .setName("category")
@@ -18,7 +18,10 @@ module.exports = {
         )
     )
     .addStringOption((option) =>
-      option.setName("item").setDescription("The item to add").setRequired(true)
+      option
+        .setName("item")
+        .setDescription("The item to remove")
+        .setRequired(true)
     ),
   async execute(interaction) {
     if (!interaction.member.roles.cache.has(databaseAdmin)) {
@@ -34,8 +37,8 @@ module.exports = {
     const item = interaction.options.getString("item");
 
     const embed = new EmbedBuilder()
-      .setTitle("Added Item")
-      .setDescription(`Added \`${item}\` to \`${category}\``)
+      .setTitle("Removed Item")
+      .setDescription(`Removed \`${item}\` from \`${category}\``)
       .setColor(colors.green)
       .setTimestamp()
       .setFooter({
@@ -43,7 +46,7 @@ module.exports = {
         iconURL: interaction.user.displayAvatarURL(),
       });
 
-    await addItem(category, item, interaction.user.id)
+    await removeItem(category, item)
       .then(() => {
         interaction.editReply({ embeds: [embed] });
       })

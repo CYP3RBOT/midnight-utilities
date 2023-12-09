@@ -18,13 +18,10 @@ async function getItem(query) {
 
     const result = await col.findOne({});
 
-    // loop through "results" and find the item that matches the query
-    // return that item
-    // if no item matches the query, return null
-
+    if (!result) return null;
     for (const [key, value] of Object.entries(result)) {
       for (let i = 0; i < value.length; i++) {
-        if (value[i] === query) {
+        if (value[i].item === query) {
           return key;
         }
       }
