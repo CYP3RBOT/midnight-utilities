@@ -17,9 +17,8 @@ async function addItem(collection, item) {
     const col = client.db("inventory").collection(collection);
 
     const cursor = col.insertOne({ collection: item.toString() });
-    const results = await cursor.toArray();
 
-    return results;
+    return await cursor;
   } catch (e) {
     console.error(e);
   } finally {
