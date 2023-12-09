@@ -9,7 +9,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const commands = [];
 const commandFiles = fs
-  .readdirSync(__dirname + "\\commands")
+  .readdirSync(__dirname + "/commands")
   .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
